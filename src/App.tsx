@@ -1,14 +1,15 @@
-import { Container, Typography } from '@mui/material';
+import { CircularProgress, Container, Typography } from '@mui/material';
 import { useState } from 'react';
 import useLocations from './hooks/useLocations';
 import LocationBox from './components/LocationBox';
 import WeatherPredictionSelector from './components/WeatherPredictionSelector';
 import './static/App.css';
 
+
 function App() {
   const [query, setQuery] = useState('Cluj');
-  const { locations } = useLocations(query);
   const [pickedLocation, setPickedLocation] = useState<number>(0);
+  const { data: locations = [], isLoading, isError } = useLocations(query);
 
   return (
     <Container maxWidth="md">
@@ -22,6 +23,8 @@ function App() {
         pickedLocation={pickedLocation}
         setPickedLocation={setPickedLocation}
       />
+      {isLoading && <CircularProgress sx={{ marginTop: 3 }}/>}
+      {isError && <Typography color="error" my={3}>Error fetching locations</Typography>}
       {pickedLocation > 0 && <WeatherPredictionSelector pickedLocation={pickedLocation} />}
     </Container>
   );

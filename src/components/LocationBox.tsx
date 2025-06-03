@@ -1,6 +1,6 @@
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { ChangeEvent, SyntheticEvent, useCallback } from 'react';
+import { ChangeEvent, SyntheticEvent, useCallback, useMemo } from 'react';
 import '../static/LocationBox.css';
 
 type Location = {
@@ -29,12 +29,14 @@ export default function LocationBox(props: Props) {
     }
   };
 
+  const memoizedOptions = useMemo(() => locations || [], [locations]);
+
   return (
     <div className="LocationBox">
       <Autocomplete
         disablePortal
         id="combo-box"
-        options={locations || []}
+        options={memoizedOptions}
         getOptionLabel={(option) => option.label}
         sx={{ width: 300, margin: 'auto', marginBottom: 10 }}
         renderInput={(params) => (

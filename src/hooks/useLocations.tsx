@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 type Location = {
   LocalizedName: string;
@@ -10,28 +10,26 @@ type FetchedLocation = {
   id: number;
 };
 
-export default function useLocations(query: string = 'a') {
-  const [locations, setLocations] = useState<FetchedLocation[]>([]);
+const fetchLocations = async (query: string): Promise<FetchedLocation[]> => {
+  const res = await fetch(
+    `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${
+      import.meta.env.VITE_ACCUWEATHER_API_KEY
+    }&q=${query}`,
+  );
 
-  useEffect(() => {
-    fetch(
-      `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${
-        import.meta.env.VITE_ACCUWEATHER_API_KEY
-      }&q=${query}`,
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (data !== null && data !== undefined) {
-          const fetchedLocations = data.map((location: Location) => ({
-            label: location.LocalizedName,
-            id: location.Key,
-          }));
+  const data = await res.json();
 
-          setLocations(fetchedLocations);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, [query]);
+  if (!Array.isArray(data)) return [];
 
-  return { locations };
+  return data.map((location: Location) => ({
+    label: location.LocalizedName,
+    id: location.Key,
+  }));
+};
+
+export default function useLocations(query: string = 'Cluj') {
+  return useQuery({
+    queryKey: ['locations', query],
+    queryFn: () => fetchLocations(query),
+  });
 }
