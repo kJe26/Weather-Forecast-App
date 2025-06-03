@@ -1,0 +1,15 @@
+#root {
+  width: 100vw;
+  height: 100svh;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.LocationBox {
+  margin-bottom: 20pt;
+}
+
+.app-name {
+  color: aquamarine !important;
+}
