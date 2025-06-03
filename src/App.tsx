@@ -1,32 +1,30 @@
-import { CircularProgress, Container, Typography } from '@mui/material';
 import { useState } from 'react';
 import useLocations from './hooks/useLocations';
-import LocationBox from './components/LocationBox';
-import WeatherPredictionSelector from './components/WeatherPredictionSelector';
 import './static/App.css';
+import { ThemeContext, ThemeType } from './context/theme.context';
+import AppBody from './components/AppBody';
 
 
 function App() {
   const [query, setQuery] = useState('Cluj');
   const [pickedLocation, setPickedLocation] = useState<number>(0);
   const { data: locations = [], isLoading, isError } = useLocations(query);
-
+  const [theme, setTheme] = useState<ThemeType>('dark');
+  
   return (
-    <Container maxWidth="md">
-      <Typography variant="h2" sx={{ marginBottom: 10, marginTop: 5 }}>
-        Welcome to <span className="app-name">SkySync</span>
-      </Typography>
-      <LocationBox
-        locations={locations}
-        query={query}
-        setQuery={setQuery}
+    <ThemeContext.Provider value={theme}>
+      <AppBody 
         pickedLocation={pickedLocation}
         setPickedLocation={setPickedLocation}
+        locations={locations}
+        isLoading={isLoading}
+        isError={isError}
+        theme={theme}
+        setTheme={setTheme}
+        query={query}
+        setQuery={setQuery}
       />
-      {isLoading && <CircularProgress sx={{ marginTop: 3 }}/>}
-      {isError && <Typography color="error" my={3}>Error fetching locations</Typography>}
-      {pickedLocation > 0 && <WeatherPredictionSelector pickedLocation={pickedLocation} />}
-    </Container>
+    </ThemeContext.Provider>
   );
 }
 

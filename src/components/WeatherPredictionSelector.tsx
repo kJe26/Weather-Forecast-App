@@ -4,6 +4,7 @@ import WeatherTabPanel from './WeatherTabPanel';
 import useLocationWeather from '../hooks/useLocationWeather';
 import WeatherInfoCard from './WeatherInfoCard';
 import { WeatherForecastInfoDaily, WeatherForecastInfoHours } from '../types/WeatherForecastTypes';
+import { useColors } from '../context/theme.context';
 
 function a11yProps(index: number) {
   return {
@@ -20,18 +21,20 @@ export default function WeatherPredictionSelector(props: { pickedLocation: numbe
     setValue(newValue);
   };
 
+  const { primaryColor, textColor } = useColors();
+
   return (
     <div className="WeatherPredictionSelector">
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'white' }}>
+        <Box sx={{ borderBottom: 1, borderColor: textColor }}>
           <Tabs
             value={value}
             onChange={handleChange}
             aria-label="basic tabs example"
             sx={{
-              '& .MuiTabs-indicator': { backgroundColor: 'aquamarine' },
-              '& .Mui-selected': { color: 'aquamarine !important' },
-              '& .MuiTab-root': { color: 'white', outline: 'none' },
+              '& .MuiTabs-indicator': { backgroundColor: primaryColor },
+              '& .Mui-selected': { color: `${primaryColor} !important` },
+              '& .MuiTab-root': { color: textColor, outline: 'none' },
               margin: 'auto',
               width: 'fit-content',
             }}

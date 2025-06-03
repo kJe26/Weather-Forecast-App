@@ -5,14 +5,14 @@ type Location = {
   Key: number;
 };
 
-type FetchedLocation = {
+export type FetchedLocation = {
   label: string;
   id: number;
 };
 
 const fetchLocations = async (query: string): Promise<FetchedLocation[]> => {
   const res = await fetch(
-    `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${
+    `${import.meta.env.VITE_LOCATIONS_URL}?apikey=${
       import.meta.env.VITE_ACCUWEATHER_API_KEY
     }&q=${query}`,
   );

@@ -6,13 +6,13 @@ export default function useLocationWeather(
   locationKey: number,
 ): { weatherInfo: WeatherForecastInfoDaily[] | WeatherForecastInfoHours[]; loading: boolean; success: boolean } {
   const forecastType: { [key: number]: string } = {
-    0: `http://dataservice.accuweather.com/forecasts/v1/hourly/1hour/${locationKey}?apikey=${
+    0: `${import.meta.env.VITE_WEATHER_INFO_URL}/hourly/1hour/${locationKey}?apikey=${
       import.meta.env.VITE_ACCUWEATHER_API_KEY
     }&details=true&metric=true`,
-    1: `http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/${locationKey}?apikey=${
+    1: `${import.meta.env.VITE_WEATHER_INFO_URL}/hourly/12hour/${locationKey}?apikey=${
       import.meta.env.VITE_ACCUWEATHER_API_KEY
     }&details=true&metric=true`,
-    2: `http://dataservice.accuweather.com/forecasts/v1/daily/1day/${locationKey}?apikey=${
+    2: `${import.meta.env.VITE_WEATHER_INFO_URL}/daily/1day/${locationKey}?apikey=${
       import.meta.env.VITE_ACCUWEATHER_API_KEY
     }&details=true&metric=true`,
   };

@@ -1,7 +1,7 @@
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { ChangeEvent, SyntheticEvent, useCallback, useMemo } from 'react';
-import '../static/LocationBox.css';
+import { useColors } from '../context/theme.context';
 
 type Location = {
   label: string;
@@ -29,6 +29,8 @@ export default function LocationBox(props: Props) {
     }
   };
 
+  const { textColor } = useColors();
+
   const memoizedOptions = useMemo(() => locations || [], [locations]);
 
   return (
@@ -38,7 +40,32 @@ export default function LocationBox(props: Props) {
         id="combo-box"
         options={memoizedOptions}
         getOptionLabel={(option) => option.label}
-        sx={{ width: 300, margin: 'auto', marginBottom: 10 }}
+        sx={{ 
+          width: 300, 
+          margin: 'auto', 
+          marginBottom: 10,
+          '& label': {
+            color: textColor,
+          },
+          '& label.Mui-focused': {
+            color: textColor,
+          },
+          '& .MuiOutlinedInput-root': {
+            color: textColor,
+            '& fieldset': {
+              borderColor: textColor,
+            },
+            '&:hover fieldset': {
+              borderColor: textColor,
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: textColor,
+            },
+          },
+          '& svg': {
+            color: textColor,
+          },
+        }}
         renderInput={(params) => (
           <TextField {...params} label="Search for a location" value={query} onChange={handleChange} />
         )}
